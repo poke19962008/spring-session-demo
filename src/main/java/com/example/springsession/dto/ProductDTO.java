@@ -9,7 +9,7 @@ public class ProductDTO {
     private String title;
     private boolean isInsStock;
     private String description;
-    private int salePrice;
+    private double salePrice;
 
     public String getTitle() {
         return title;
@@ -35,11 +35,11 @@ public class ProductDTO {
         this.description = description;
     }
 
-    public int getSalePrice() {
+    public double getSalePrice() {
         return salePrice;
     }
 
-    public void setSalePrice(int salePrice) {
+    public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
     }
 }
