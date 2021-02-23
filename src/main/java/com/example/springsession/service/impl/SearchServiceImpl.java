@@ -28,10 +28,12 @@ public class SearchServiceImpl implements SearchService {
     public SearchResponseDTO getProducts(SearchRequestDTO request) {
 
         String searchTermQuery = request.getSearchTerm();
-        List<ProductDTO> productDTOS = getSearchTermBaseProducts(searchTermQuery);
-        String locationQuery = SolrFieldNames.STOCK_LOCATION  + ":\"" + request.getLocation() + "\"";
-        List<ProductDTO> locationProductDTOs = getSearchTermBaseProducts(locationQuery);
         SearchResponseDTO responseDTO = new SearchResponseDTO();
+        String locationQuery = SolrFieldNames.STOCK_LOCATION  + ":\"" + request.getLocation() + "\"";
+
+        List<ProductDTO> productDTOS = getSearchTermBaseProducts(searchTermQuery);
+        List<ProductDTO> locationProductDTOs = getSearchTermBaseProducts(locationQuery);
+
         responseDTO.setProducts(productDTOS);
         responseDTO.setProductLocation(locationProductDTOs);
         return responseDTO;
