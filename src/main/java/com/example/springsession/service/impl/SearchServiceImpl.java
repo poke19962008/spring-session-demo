@@ -27,7 +27,18 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public SearchResponseDTO getProducts(SearchRequestDTO request) {
 
-        Map<String, Object> productResponse = searchClient.getProducts(request.getSearchTerm());
+        String searchTermQuery = request.getSearchTerm();
+        List<ProductDTO> productDTOS = getSearchTermBaseProducts(searchTermQuery);
+        String locationQuery = SolrFieldNames.STOCK_LOCATION  + ":\"" + request.getLocation() + "\"";
+        List<ProductDTO> locationProductDTOs = getSearchTermBaseProducts(locationQuery);
+        SearchResponseDTO responseDTO = new SearchResponseDTO();
+        responseDTO.setProducts(productDTOS);
+        responseDTO.setProductLocation(locationProductDTOs);
+        return responseDTO;
+    }
+
+    private List<ProductDTO> getSearchTermBaseProducts(String query) {
+        Map<String, Object> productResponse = searchClient.getProducts(query);
         Map<String, Object> responseObject = (Map<String, Object>) (productResponse.get("response"));
         List<Map<String, Object>> products = (List<Map<String, Object>>) responseObject.get("docs");
         List<ProductDTO> productDTOS = new ArrayList<>();
@@ -43,8 +54,6 @@ public class SearchServiceImpl implements SearchService {
 
             productDTOS.add(productDTO);
         }
-        SearchResponseDTO responseDTO = new SearchResponseDTO();
-        responseDTO.setProducts(productDTOS);
-        return responseDTO;
+        return productDTOS;
     }
 }
